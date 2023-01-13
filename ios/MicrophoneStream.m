@@ -113,13 +113,10 @@ RCT_EXPORT_METHOD(stop) {
 - (void)processInputBuffer:(AudioQueueBufferRef)inBuffer queue:(AudioQueueRef)queue {
     SInt16 *audioData = inBuffer->mAudioData;
     UInt32 count = inBuffer->mAudioDataByteSize / sizeof(SInt16);
-
-    NSMutableArray *array  = [NSMutableArray arrayWithCapacity:count];
-
-    for (int i = 0; i < count; ++i)
-        [array addObject:[NSNumber numberWithInteger:linear2ulaw(audioData[i])]];
-
-    [self sendEventWithName:@"audioData" body:array];
+    for (int i = 0; i < _bufferSize; i++) {
+        _audioData[i] = @(audioData[i]);
+    }
+    [self sendEventWithName:@"audioData" body:[NSArray arrayWithObjects:_audioData count:count]];
     AudioQueueEnqueueBuffer(queue, inBuffer, 0, NULL);
 }
 
