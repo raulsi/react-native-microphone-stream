@@ -1,27 +1,19 @@
 apply plugin: 'com.android.library'
 
-def safeExtGet(prop, fallback) {
+def getExt(prop, fallback) {
     rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
 }
 
 android {
-  compileSdkVersion safeExtGet('compileSdkVersion', 23)
-  buildToolsVersion safeExtGet('buildToolsVersion', '23.0.3')
+    compileSdkVersion getExt('compileSdkVersion', 29)
+    buildToolsVersion getExt('buildToolsVersion', '29.0.3')
 
-  defaultConfig {
-    minSdkVersion safeExtGet('minSdkVersion', 16)
-    targetSdkVersion safeExtGet('targetSdkVersion', 23)
-    versionCode 1
-    versionName "1.0"
-  }
-}
-
-allprojects {
-  repositories {
-    jcenter()
-  }
+    defaultConfig {
+        minSdkVersion getExt('minSdkVersion', 16)
+        targetSdkVersion getExt('targetSdkVersion', 29)
+    }
 }
 
 dependencies {
-  implementation 'com.facebook.react:react-native:+'
+    compileOnly 'com.facebook.react:react-native:+'
 }
